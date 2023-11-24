@@ -46,9 +46,10 @@ func RedirectToRealLink(db adapter.DB) echo.HandlerFunc {
 		id := c.Param("id")
 		link := adapter.Link{}
 		db.Conn.Where("short = ?", id).First(&link)
+		// fmt.Println("its working well", link.FullLink, c.Redirect(http.StatusOK, link.FullLink))
 		link.ClickCount += 1
 		db.Conn.Save(&link)
 
-		return c.Redirect(http.StatusOK, link.FullLink)
+		return c.Redirect(http.StatusPermanentRedirect, link.FullLink)
 	}
 }
